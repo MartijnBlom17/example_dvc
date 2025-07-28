@@ -1,0 +1,17 @@
+[project]
+name = "example_dvc"
+version = "0.1.0"
+description = "Example repository to explain the use-case for DVC"
+authors = [
+    { name = "Martijn Blom", email = "martijn@cleverfranke.com" }
+]
+readme = "README.md"
+package-mode = false
+requires-python = ">=3.10.12,<3.10.14"
+
+dependencies = [
+    "pre-commit>=4.2.0"
+]
+
+[tool.mypy]
+disable_error_code = ["import-untyped"]

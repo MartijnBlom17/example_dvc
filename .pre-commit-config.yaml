@@ -1,0 +1,11 @@
+default_stages: [pre-commit]
+repos:
+  # Check if the DVC files are in sync with the remote storage
+  - repo: local
+    hooks:
+      - id: dvc-check
+        name: Check DVC sync with remote
+        entry: ./.dvc-check.sh
+        language: script
+        pass_filenames: false
+        always_run: true

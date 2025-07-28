@@ -1,0 +1,5 @@
+[core]
+    remote = azureapp
+[remote "azureapp"]
+    url = azure://dvc-data-storage/my_example_data
+    account_name = timelinedevapp
