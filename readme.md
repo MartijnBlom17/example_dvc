@@ -4,7 +4,7 @@ To manage the pipeline data we use [DVC](https://dvc.org/) to essentially have v
 
 See the [DVC docs](https://dvc.org/doc) for more information, but in short:
 
-- the actual data that is managed using DVC is stored in folder (`resources/input_data`) that is ignored by git (we don't want the actual data in the git repository)
+- the actual data that is managed using DVC is stored in folder (`my_example_data`) that is ignored by git (we don't want the actual data in the git repository)
 
 - for every file/folder that is managed using DVC a `.dvc` file is added to the repository, which contains some metadata that is used by DVC tools to know how to find the most up-to-date version of the corresponding file/folder.
 
@@ -18,13 +18,28 @@ First make sure DVC is installed on your system
 
 - mac: `brew install dvc`
 
+After installing DVC onto your device, to make sure that merge conflicts are automatically solved if more than one branch updates the data sources, add the following settings for git config in bash (these settings tell git to treat .dvc files differently and allows dvc to solve file conflicts):
+
+```bash
+git config merge.dvc.name 'DVC merge driver'
+git config merge.dvc.driver 'dvc git-hook merge-driver --ancestor %O --our %A --their %B'
+```
+
+### Prepare Data
+
+Latest resources should be pulled from Azure using the following command (Only add new files after running the command):
+
+```bash
+dvc pull
+```
+
 ### Configure the DVC remote (required once for the repository)
 
 _Note that configuration was performed when DVC was initially configured and does NOT need to be repeated by every developer_
 
 Add the Azure remote for DVC
 
-    dvc remote add -d azureapp azure://dvc-data-storage/data
+    dvc remote add -d azureapp azure://dvc-data-storage/my_example_data
 
 Configure the Azure storage account name:
 
@@ -104,6 +119,6 @@ We're probably gonna have conflicts very often because every branch with data up
 
 There are various ways to solve conflicts, see also the [DVC docs](https://dvc.org/doc/user-guide/how-to/resolve-merge-conflicts#how-to-resolve-merge-conflicts-in-dvc-metafiles).
 
-The `git merge driver` mentioned in the docs might be useful (hasn't been tested yet). Otherwise, we'll probably have to solve conflicts manually. In that case some caution is required, because it's easy to make mistakes and overlook/miss changes on one of the conflicting branches.
-
-For resolving data conflicts it's very useful to have clear commit messages with both concise, descriptive headers and full diffs in their body (see [Push new/updated data](#push-newupdated-data)). So please be diligent and remember to add proper diff information to the commits.
+The `git merge driver` mentioned in the docs is a useful tool to automatically solve merge conflicts. Instead of pikcing one of the hashes from the `.dvc` file,
+you can update the git config settings to allow DVC to solve the merge itself. It checks which files have been added, removed or modified by both branches
+and automatically updates your hash to include both changes. In case it can not resolve all conflicts there is always the possibility to manually resolve the conflicts.
