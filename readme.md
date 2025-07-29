@@ -39,7 +39,7 @@ _Note that configuration was performed when DVC was initially configured and doe
 
 Add the Azure remote for DVC
 
-    dvc remote add -d azureapp azure://dvc-data-storage/data
+    dvc remote add -d azureapp azure://dvc-data-storage/my_example_data
 
 Configure the Azure storage account name:
 
