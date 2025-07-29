@@ -32,7 +32,7 @@ Latest resources should be pulled from Azure using the following command (Only a
 ```bash
 dvc pull
 ```
-df
+
 ### Configure the DVC remote (required once for the repository)
 
 _Note that configuration was performed when DVC was initially configured and does NOT need to be repeated by every developer_
